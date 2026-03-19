@@ -6,49 +6,123 @@ AI 驱动的网站信息收集 Agent，基于 Claude Code SDK。
 
 ---
 
-## 前提条件
+## 快速开始
 
-### 1. 安装 uv（Python 包管理器）
+### macOS
 
-方式二和方式三均需要 [uv](https://docs.astral.sh/uv/)。
+**1. 安装 Node.js（用于 Claude Code CLI）**
 
-**推荐（国内网络）：通过 pip + 镜像安装**
-
-```bash
-pip install uv -i https://mirrors.aliyun.com/pypi/simple/
-```
-
-**macOS 用户也可用 Homebrew：**
+从 https://nodejs.org 下载安装，或用 Homebrew：
 
 ```bash
-brew install uv
+brew install node
 ```
 
-**官方脚本（需能访问 GitHub）：**
-
-```bash
-# macOS / Linux
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Windows（PowerShell）
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
-
-安装后重启终端，确认 `uv --version` 可正常输出。
-
-### 2. 安装 Claude Code CLI（必须）
-
-无论哪种安装方式，均需要安装 **Claude Code CLI**（实际工具执行引擎）：
+**2. 安装 Claude Code CLI**
 
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
 
-> WebReconAgent 通过 Claude Code SDK 驱动 `claude` 子进程执行所有系统工具（nmap、dig、ffuf 等），`claude` 命令必须在系统 PATH 中可访问。
+**3. 安装 uv**
+
+```bash
+# 推荐（国内网络）
+pip install uv -i https://mirrors.aliyun.com/pypi/simple/
+
+# 或 Homebrew
+brew install uv
+```
+
+**4. 安装 WebReconAgent**
+
+```bash
+git clone https://github.com/yimingy72/WebReconAgent.git
+cd WebReconAgent
+uv tool install .
+```
+
+**5. 配置 PATH**
+
+`uv tool install` 完成后会提示 `~/.local/bin` 不在 PATH 中，执行：
+
+```bash
+echo 'export PATH="/Users/$USER/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+**6. 运行**
+
+```bash
+webrecon --init-config        # 生成配置文件
+webrecon -t example.com       # 开始侦察
+```
 
 ---
 
-## 安装与运行
+### Windows
+
+**1. 安装 Node.js**
+
+从 https://nodejs.org 下载安装（LTS 版本）。
+
+**2. 安装 Claude Code CLI**
+
+在 PowerShell 中执行：
+
+```powershell
+npm install -g @anthropic-ai/claude-code
+```
+
+**3. 安装 uv**
+
+```powershell
+# 推荐（国内网络，需已有 Python）
+pip install uv -i https://mirrors.aliyun.com/pypi/simple/
+
+# 或官方脚本（需能访问 GitHub）
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**4. 安装 WebReconAgent**
+
+```powershell
+git clone https://github.com/yimingy72/WebReconAgent.git
+cd WebReconAgent
+uv tool install .
+```
+
+**5. 配置 PATH**
+
+`uv tool install` 完成后会提示可执行文件路径（通常为 `%USERPROFILE%\.local\bin`），将其加入系统环境变量：
+
+- 打开「系统属性」→「高级」→「环境变量」
+- 在「用户变量」的 `Path` 中添加 `%USERPROFILE%\.local\bin`
+- 重新打开 PowerShell 生效
+
+或在当前 PowerShell 会话临时生效：
+
+```powershell
+$env:PATH += ";$env:USERPROFILE\.local\bin"
+```
+
+**6. 运行**
+
+```powershell
+webrecon --init-config        # 生成配置文件
+webrecon -t example.com       # 开始侦察
+```
+
+---
+
+## 前提条件说明
+
+- **Claude Code CLI**：WebReconAgent 通过 Claude Code SDK 驱动 `claude` 子进程执行所有系统工具（nmap、dig、ffuf 等），`claude` 命令必须在系统 PATH 中可访问。
+- **uv**：Python 包管理器，用于安装和运行 WebReconAgent。方式二和方式三均需要。
+
+---
+
+## 其他安装方式
 
 ### 方式一：下载预编译可执行文件（无需 Python）
 
